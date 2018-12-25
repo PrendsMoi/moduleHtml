@@ -5,7 +5,7 @@
  * @Github: https://github.com/973749104
  * @Blog: http://www.liuhgxu.space/
  * @LastEditors: Arivn
- * @LastEditTime: 2018-12-20 15:52:22
+ * @LastEditTime: 2018-12-24 09:39:13
  -->
 <template>
   <div id="preview">
@@ -23,9 +23,7 @@ export default {
   },
   created() {
     this.nodelist = this.$store.getters.getnode
-    // this.nodelist[0].props.click = () => {
-    //   console.log(11111)
-    // }
+    console.log(this.nodelist)
   },
   methods: {
   }

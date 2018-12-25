@@ -26,7 +26,9 @@ html, body{
 }
 ul{
   li{
-    strong{
+    h3, h4, h5, h6{
+      display: flex;
+      justify-content:space-between;
       color: #E74C3C;
     }
     list-style: none;

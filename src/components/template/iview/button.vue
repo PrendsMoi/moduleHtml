@@ -5,10 +5,11 @@
  * @Github: https://github.com/973749104
  * @Blog: http://www.liuhgxu.space/
  * @LastEditors: Arivn
- * @LastEditTime: 2018-12-21 13:53:18
+ * @LastEditTime: 2018-12-24 11:18:05
  -->
 <template>
   <vButton
+    :style="{width: `${width}px`, height: `${height}px`}"
     :type="type"
     :ghost="ghost"
     :size="size"
@@ -37,6 +38,14 @@ export default {
     vButton: Button
   },
   props: {
+    width: {
+      type: String,
+      default: ''
+    },
+    height: {
+      type: String,
+      default: ''
+    },
     value: {
       type: String,
       default: ''
@@ -98,7 +107,7 @@ export default {
     },
     click: {
       type: Function,
-      default: (e)=>{}
+      default: ()=>{}
     }
   },
   mounted() {

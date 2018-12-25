@@ -5,7 +5,7 @@
  * @Github: https://github.com/973749104
  * @Blog: http://www.liuhgxu.space/
  * @LastEditors: Arivn
- * @LastEditTime: 2018-12-21 16:33:48
+ * @LastEditTime: 2018-12-24 11:56:14
  -->
 <template>
   <div id="layout" @click="cancelRight">
@@ -20,7 +20,7 @@
       </iHeader>
       <iLayout>
         <!-- 左侧组件栏 -->
-        <iSider width="230" :style="{background: '#fff', padding: '10px'}">
+        <iSider class="sider" width="230">
           <draggable v-model="componentsList" :options="options" :move="moved" :clone="clone">
             <div class="components" v-for="(item, index) in componentsList" :key="index" >
               <component :is="item.component" />
@@ -55,26 +55,46 @@
           </iContent>
         </iLayout>
         <!-- 右侧内容栏 -->
-        <iSider width="450" :style="{background: '#fff'}">
+        <iSider class="sider" width="450">
           <!-- 属性栏 -->
           <ul>
             <li v-for="(item, key, index) in propsList" :key="index">
-              <strong>{{ key }}：</strong>
-              <iSelect v-model="propsList[key]" v-if="typeof validValue[key] === 'object' && validValue[key]">
+              <h3>{{ key }}：
+                <Icon class="add" size="25" type="ios-add" v-if="propsList[key] instanceof Array" @click="addItem(propsList[key])"/>
+              </h3>
+              <Select v-model="propsList[key]" v-if="typeof validValue[key] === 'object' && validValue[key]">
                 <Option
                   v-for="(oItem, oIndex) in validValue[key]"
                   :value="oItem"
                   :key="oIndex">
                   {{ oItem }}
                 </Option>
-              </iSelect>
+              </Select>
               <iInput v-model="propsList[key]" v-if="(typeof propsList[key] === 'string' || typeof propsList[key] === 'number') && validValue[key] === null"/>
               <ul v-if="propsList[key] instanceof Array">
-                <li v-for="(citem, cindex) in propsList[key]" :key="cindex">
-                  <h5>label</h5>
-                  <iInput v-model="citem.label" />
-                  <h5>value</h5>
-                  <iInput v-model="citem.value" />
+                <li v-for="(citem, cindex) in propsList[key]" :key='cindex'>
+                  <Row class="array">
+                    <Col span="2">
+                      <h5>label:</h5>
+                    </Col>
+                    <Col span="7">
+                      <iInput v-model="citem.label" />
+                    </Col>
+                    <Col span="1">&nbsp;</Col>
+                    <Col span="2">
+                      <h5>value:</h5>
+                    </Col>
+                    <Col span="7">
+                      <iInput v-model="citem.value" />
+                    </Col>
+                    <Col span="4" style="text-align: center">
+                      <span>diabled</span>
+                      <iSwitch v-model="citem.disabled"/>
+                    </Col>
+                    <Col span="1">
+                      <Icon type="ios-close" size="25" class="remove" @click="removeItem(propsList[key], cindex)"/>
+                    </Col>
+                  </Row>
                 </li>
               </ul>
               <iSwitch v-model="propsList[key]" v-if="typeof propsList[key] === 'boolean'"/>
@@ -89,7 +109,7 @@
 <script>
 import draggable from 'vuedraggable'
 // import Poptip from '../components/template/iview/poptip'
-import { Dropdown, DropdownMenu, DropdownItem } from 'iview'
+import { Dropdown, DropdownMenu, DropdownItem, Select, Row, Col, Icon } from 'iview'
 import deepCopy from '../util/deepCopy.js'
 import { iviewGroup } from '../components/template/iview'
 
@@ -116,7 +136,11 @@ export default {
     // Poptip,
     Dropdown,
     DropdownMenu,
-    DropdownItem
+    DropdownItem,
+    Select,
+    Row,
+    Col,
+    Icon
   },
   created() {
   },
@@ -149,6 +173,16 @@ export default {
     remove: function(index) {
       this.previewList.splice(index, 1)
       this.propsList = {}
+    },
+    removeItem: function(arr, index) {
+      arr.splice(index, 1)
+    },
+    addItem: function(arr) {
+      arr.push({
+        label: '',
+        value: '',
+        diabled: false
+      })
     }
   }
 }
@@ -188,6 +222,29 @@ export default {
       &:first-child{
         cursor: pointer;
       }
+    }
+  }
+  .sider{
+    background: #fff;
+    overflow: auto;
+    padding: 5px;
+    .array{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .remove, .add{
+    cursor: pointer;
+    font-weight: bold;
+    color: #000;
+    &:hover{
+      color: red;
+    }
+  }
+  .add {
+    &:hover {
+      color: blue;
     }
   }
 }

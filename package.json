@@ -37,7 +37,8 @@
       "eslint:recommended"
     ],
     "rules": {
-      "no-console": "off"
+      "no-console": "off",
+      "vue/html-self-closing": "off"
     },
     "parserOptions": {
       "parser": "babel-eslint"

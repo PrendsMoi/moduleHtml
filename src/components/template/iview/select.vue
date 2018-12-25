@@ -5,7 +5,7 @@
  * @Github: https://github.com/973749104
  * @Blog: http://www.liuhgxu.space/
  * @LastEditors: Arivn
- * @LastEditTime: 2018-12-21 15:34:41
+ * @LastEditTime: 2018-12-24 09:27:34
  -->
 <template>
   <vSelect
@@ -144,7 +144,7 @@ export default {
     }
   },
   watch: {
-    defaultValue: function(newValue, oldValue) {
+    defaultValue: function() {
       this.value = this.defaultValue
     }
   }

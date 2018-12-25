@@ -5,7 +5,7 @@
  * @Github: https://github.com/973749104
  * @Blog: http://www.liuhgxu.space/
  * @LastEditors: Arivn
- * @LastEditTime: 2018-12-21 15:30:13
+ * @LastEditTime: 2018-12-24 09:29:41
  */
  // 设置属性
  const setProps = (originalProps) => {
@@ -17,6 +17,7 @@
   for(let i in originalProps) {
     newProps[i] = originalProps[i].array ? originalProps[i].default() : originalProps[i].default
   }
+  // console.log(newProps)
   return newProps
  }
  // 获取提供的值
