@@ -5,16 +5,16 @@
  * @Github: https://github.com/973749104
  * @Blog: http://www.liuhgxu.space/
  * @LastEditors: Arivn
- * @LastEditTime: 2018-12-21 14:18:54
+ * @LastEditTime: 2018-12-28 09:19:20
  */
 import {
   Layout,
   Header,
   Sider,
   Content,
-  Switch,
+  // Switch,
   Input,
-  Table,
+  // Table,
   // Avatar,
   Radio,
   // Select,
@@ -26,58 +26,60 @@ import {
 import Button from './button.vue'
 import Avatar from './avatar.vue'
 import Select from './select.vue'
+import Table from './table.vue'
+
 import { getComponetGroup } from '../../../util/util'
 
 const iviewList = {
-  iLayout: {
+  Layout: {
     name: 'Layout',
     component: Layout,
     hide: true
   },
-  iHeader: {
+  Header: {
     name: 'Header',
     component: Header,
     hide: true
   },
-  iSider: {
+  Sider: {
     name: 'Sider',
     component: Sider,
     hide: true
   },
-  iContent: {
+  Content: {
     name: 'Content',
     component: Content,
     hide: true
   },
-  iSwitch: {
-    name: 'Switch',
-    component: Switch
-  },
-  iTable: {
+  // Switch: {
+  //   name: 'Switch',
+  //   component: Switch
+  // },
+  Table: {
     name: 'Table',
     component: Table
   },
-  iAvatar: {
+  Avatar: {
     name: 'Avatar',
     component: Avatar
   },
-  iInput: {
+  Input: {
     name: 'Input',
     component: Input
   },
-  iRadio: {
+  Radio: {
     name: 'Radio',
     component: Radio
   },
-  iButton: {
+  Button: {
     name: 'Button',
     component: Button
   },
-  iDatePicker: {
+  DatePicker: {
     name: 'DatePicker',
     component: DatePicker
   },
-  iSelect: {
+  Select: {
     name: 'Select',
     component: Select
   },

@@ -5,35 +5,43 @@
  * @Github: https://github.com/973749104
  * @Blog: http://www.liuhgxu.space/
  * @LastEditors: Arivn
- * @LastEditTime: 2018-12-24 11:56:14
+ * @LastEditTime: 2019-01-03 15:11:01
  -->
 <template>
   <div id="layout" @click="cancelRight">
-    <iLayout :style="{height: '100%'}">
+    <Layout :style="{height: '100%'}">
     <!-- 顶部栏 -->
-      <iHeader class="header">
+      <Header class="header">
         <h2>可拖拽页面</h2>
-        <iButton
-          type='primary'
-          :click="priview"
-          :disabled="previewList.length <= 0">预览</iButton>
-      </iHeader>
-      <iLayout>
+        <div>
+          <Button
+            style="margin-right: 10px"
+            type='primary'
+            :click="priview"
+            :disabled="previewList.length <= 0">
+              预览
+          </Button>
+          <!-- <Button :click="showCode">
+            显示代码
+          </Button> -->
+        </div>
+      </Header>
+      <Layout>
         <!-- 左侧组件栏 -->
-        <iSider class="sider" width="230">
+        <Sider class="sider" width="230">
           <draggable v-model="componentsList" :options="options" :move="moved" :clone="clone">
             <div class="components" v-for="(item, index) in componentsList" :key="index" >
               <component :is="item.component" />
               <h4 v-if="item.title">{{ item.title }}</h4>
             </div>
           </draggable>
-        </iSider>
+        </Sider>
         <!-- 预览 -->
-        <iLayout>
-          <iContent :style="{height: '100%'}">
+        <Layout>
+          <Content :style="{height: '100%'}">
             <div class="content" ref="preview">
               <draggable class="preview" v-model="previewList" :options="{group: 'component', pull: false}">
-                <Dropdown
+                <iDropdown
                   trigger="custom"
                   :visible="index === rightMenu"
                   transfer
@@ -43,75 +51,38 @@
                     v-bind="item.props"
                     :is="item.component"
                     :key="index"
-                    @click.left.native.stop="getProps(item.props, item.validValue, $event)"
+                    @click.left.native.stop="getProps(item.props, item.validValue, item.title, $event)"
                     @click.right.native.stop="right(index, $event)"
                   />
-                  <DropdownMenu slot="list">
-                    <DropdownItem style="color: red" name="remove" @click.native="remove(index)">移除</DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
+                  <iDropdownMenu slot="list">
+                    <iDropdownItem style="color: red" name="remove" @click.native="remove(index)">移除</iDropdownItem>
+                  </iDropdownMenu>
+                </iDropdown>
               </draggable>
             </div>
-          </iContent>
-        </iLayout>
-        <!-- 右侧内容栏 -->
-        <iSider class="sider" width="450">
+          </Content>
+        </Layout>
+        <!-- 右侧属性栏 -->
+        <Sider class="sider" width="450">
           <!-- 属性栏 -->
-          <ul>
-            <li v-for="(item, key, index) in propsList" :key="index">
-              <h3>{{ key }}：
-                <Icon class="add" size="25" type="ios-add" v-if="propsList[key] instanceof Array" @click="addItem(propsList[key])"/>
-              </h3>
-              <Select v-model="propsList[key]" v-if="typeof validValue[key] === 'object' && validValue[key]">
-                <Option
-                  v-for="(oItem, oIndex) in validValue[key]"
-                  :value="oItem"
-                  :key="oIndex">
-                  {{ oItem }}
-                </Option>
-              </Select>
-              <iInput v-model="propsList[key]" v-if="(typeof propsList[key] === 'string' || typeof propsList[key] === 'number') && validValue[key] === null"/>
-              <ul v-if="propsList[key] instanceof Array">
-                <li v-for="(citem, cindex) in propsList[key]" :key='cindex'>
-                  <Row class="array">
-                    <Col span="2">
-                      <h5>label:</h5>
-                    </Col>
-                    <Col span="7">
-                      <iInput v-model="citem.label" />
-                    </Col>
-                    <Col span="1">&nbsp;</Col>
-                    <Col span="2">
-                      <h5>value:</h5>
-                    </Col>
-                    <Col span="7">
-                      <iInput v-model="citem.value" />
-                    </Col>
-                    <Col span="4" style="text-align: center">
-                      <span>diabled</span>
-                      <iSwitch v-model="citem.disabled"/>
-                    </Col>
-                    <Col span="1">
-                      <Icon type="ios-close" size="25" class="remove" @click="removeItem(propsList[key], cindex)"/>
-                    </Col>
-                  </Row>
-                </li>
-              </ul>
-              <iSwitch v-model="propsList[key]" v-if="typeof propsList[key] === 'boolean'"/>
-            </li>
-          </ul>
-        </iSider>
-      </iLayout>
-    </iLayout>
+          <propsPre
+            :propsList="propsList"
+            :validValue="validValue"
+            :name="name"
+          />
+        </Sider>
+      </Layout>
+    </Layout>
   </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
-// import Poptip from '../components/template/iview/poptip'
-import { Dropdown, DropdownMenu, DropdownItem, Select, Row, Col, Icon } from 'iview'
-import deepCopy from '../util/deepCopy.js'
+import propsPre from './propsPre'
+import { Dropdown, DropdownMenu, DropdownItem } from 'iview'
 import { iviewGroup } from '../components/template/iview'
+import deepCopy from '../util/deepCopy.js'
+import { conversion } from '../util/util.js'
 
 export default {
   name: 'layout',
@@ -126,26 +97,22 @@ export default {
         }
       },
       previewList: [],
-      propsList: {},
-      validValue: {},
-      rightMenu: ''
+      propsList: [],
+      validValue: [],
+      rightMenu: '',
+      name: ''
     }
   },
   components: {
     draggable,
-    // Poptip,
-    Dropdown,
-    DropdownMenu,
-    DropdownItem,
-    Select,
-    Row,
-    Col,
-    Icon
+    iDropdown: Dropdown,
+    iDropdownMenu: DropdownMenu,
+    iDropdownItem: DropdownItem,
+    propsPre
   },
   created() {
   },
   mounted() {
-
   },
   methods: {
     moved: function(evt) {
@@ -158,10 +125,11 @@ export default {
       this.$store.dispatch('setnode', nodelist)
       this.$router.push('preview')
     },
-    getProps: function (props, validValue) {
+    getProps: function (props, validValue, name) {
       this.rightMenu = ''
       this.propsList = props
       this.validValue = validValue
+      this.name = name
     },
     cancelRight: function () {
       this.rightMenu = ''
@@ -170,19 +138,12 @@ export default {
       e.preventDefault()
       this.rightMenu = index
     },
+    showCode: function() {
+      conversion(this.previewList)
+    },
     remove: function(index) {
       this.previewList.splice(index, 1)
       this.propsList = {}
-    },
-    removeItem: function(arr, index) {
-      arr.splice(index, 1)
-    },
-    addItem: function(arr) {
-      arr.push({
-        label: '',
-        value: '',
-        diabled: false
-      })
     }
   }
 }
@@ -228,24 +189,6 @@ export default {
     background: #fff;
     overflow: auto;
     padding: 5px;
-    .array{
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-  .remove, .add{
-    cursor: pointer;
-    font-weight: bold;
-    color: #000;
-    &:hover{
-      color: red;
-    }
-  }
-  .add {
-    &:hover {
-      color: blue;
-    }
   }
 }
 </style>

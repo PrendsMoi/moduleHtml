@@ -5,7 +5,7 @@
  * @Github: https://github.com/973749104
  * @Blog: http://www.liuhgxu.space/
  * @LastEditors: Arivn
- * @LastEditTime: 2018-12-24 09:39:13
+ * @LastEditTime: 2018-12-26 10:30:24
  -->
 <template>
   <div id="preview">
@@ -23,7 +23,8 @@ export default {
   },
   created() {
     this.nodelist = this.$store.getters.getnode
-    console.log(this.nodelist)
+    const dom = document.querySelector('#preview')
+    console.log(dom.innerHTML )
   },
   methods: {
   }

@@ -26,13 +26,13 @@ html, body{
 }
 ul{
   li{
-    h3, h4, h5, h6{
-      display: flex;
-      justify-content:space-between;
-      color: #E74C3C;
-    }
     list-style: none;
     padding: 3px;
   }
+}
+h3, h4, h5, h6{
+  display: flex;
+  justify-content:space-between;
+  color: #E74C3C;
 }
 </style>

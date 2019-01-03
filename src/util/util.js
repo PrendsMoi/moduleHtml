@@ -5,7 +5,7 @@
  * @Github: https://github.com/973749104
  * @Blog: http://www.liuhgxu.space/
  * @LastEditors: Arivn
- * @LastEditTime: 2018-12-24 09:29:41
+ * @LastEditTime: 2018-12-27 13:55:52
  */
  // 设置属性
  const setProps = (originalProps) => {
@@ -52,4 +52,10 @@
    return group
  }
 
- export { getComponetGroup }
+//  将component转换为字符串模板
+ const conversion = (components) => {
+   components.map(item => {
+     console.log(item)
+   })
+ }
+ export { getComponetGroup, conversion }
