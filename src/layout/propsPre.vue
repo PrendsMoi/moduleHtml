@@ -5,7 +5,7 @@
  * @Github: https://github.com/973749104
  * @Blog: http://www.liuhgxu.space/
  * @LastEditors: Arivn
- * @LastEditTime: 2019-01-03 15:11:23
+ * @LastEditTime: 2019-01-04 14:37:55
  -->
 <template>
   <div class="propsPre">
@@ -24,7 +24,7 @@
       </Select>
       <Input v-model="propsList[key]" v-if="(typeof propsList[key] === 'string' || typeof propsList[key] === 'number') && validValue[key] === null"/>
       <iSwitch v-model="propsList[key]" v-if="typeof propsList[key] === 'boolean'"/>
-      <ul v-if="(propsList[key] instanceof Array)">
+      <ul v-if="(propsList[key] instanceof Array) && name === 'Select'">
         <li v-for="(citem, cindex) in propsList[key]" v-bind:key="cindex">
           <iRow class="array">
             <iCol span="2">
@@ -50,6 +50,30 @@
           </iRow>
         </li>
       </ul>
+      <ul v-if="(propsList[key] instanceof Array) && name === 'Table' && key === 'columns'">
+        <li v-for="(citem, cindex) in propsList[key]" v-bind:key="cindex">
+          <iRow class="array">
+            <iCol span="2">
+              <h5>title:</h5>
+            </iCol>
+            <iCol span="7">
+              <Input v-model="citem.title" />
+            </iCol>
+            <iCol span="1">&nbsp;</iCol>
+            <iCol span="2">
+              <h5>key:</h5>
+            </iCol>
+            <iCol span="7">
+              <Input v-model="citem.key" />
+            </iCol>
+            <iCol span="1">
+            </iCol>
+            <iCol span="2">
+              <iIcon type="ios-close" size="25" class="remove" v-on:click="removeItem(propsList[key], cindex)"/>
+            </iCol>
+          </iRow>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -64,7 +88,7 @@ export default {
   },
   updated() {
     // console.log(this.propsList)
-    // console.log(this.name)
+    console.log(this.name)
   },
   components: {
     iSelect: Select,

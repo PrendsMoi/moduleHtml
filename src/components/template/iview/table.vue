@@ -5,7 +5,7 @@
  * @Github: https://github.com/973749104
  * @Blog: http://www.liuhgxu.space/
  * @LastEditors: Arivn
- * @LastEditTime: 2019-01-03 15:12:55
+ * @LastEditTime: 2019-01-04 14:42:49
  -->
 
  <template>
@@ -16,6 +16,7 @@
     :height="height || '136'"
     :stripe="stripe"
     :border="border"
+    :show-header="showHeader"
   >
   </vTable>
  </template>
